@@ -1,0 +1,11 @@
+.CardsList {
+  padding-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  overflow: auto;
+}
+
+.CardsListLoader {
+  width: 100%;
+  height: 190px;
+}
