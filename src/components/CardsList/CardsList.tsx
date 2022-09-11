@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useState } from "react";
 import "./CardsList.css";
 import { Spin } from "antd";
+import { observer } from "mobx-react";
 import { apiGetCards } from "../../api";
-import { CardsAPI } from "../../types";
 import { CardItem } from "../CardItem/CardItem";
+import { cardsStore } from "../../stores/cards";
 
-export const CardsList: FC = () => {
+const CardsListComponent: FC = () => {
   const [isLoading, setLoader] = useState(false);
-  const [cards, setCards] = useState<CardsAPI[]>([]);
 
   useEffect(() => {
     setLoader(true);
     apiGetCards()
-      .then(setCards)
+      .then(cardsStore.setCards)
       .finally(() => setLoader(false));
   }, []);
 
@@ -26,7 +26,7 @@ export const CardsList: FC = () => {
 
   return (
     <section className="CardsList">
-      {cards.map((item) => (
+      {cardsStore.cards.map((item) => (
         <CardItem
           key={item.id}
           id={item.id}
@@ -38,3 +38,5 @@ export const CardsList: FC = () => {
     </section>
   );
 };
+
+export const CardsList = observer(CardsListComponent);

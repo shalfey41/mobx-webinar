@@ -5,6 +5,7 @@ import EllipsisOutlined from "@ant-design/icons/EllipsisOutlined";
 import ExclamationCircleOutlined from "@ant-design/icons/ExclamationCircleOutlined";
 import { HistoryModal } from "../HistoryModal/HistoryModal";
 import { apiDeleteOperation } from "../../api";
+import { operationsStore } from "../../stores/operations";
 
 interface Props {
   id: string;
@@ -41,7 +42,9 @@ export const HistoryListItem: FC<Props> = ({
       cancelText: "Отменить",
       okText: "Удалить",
       onOk() {
-        return apiDeleteOperation(id);
+        return apiDeleteOperation(id).then(() => {
+          operationsStore.removeOperation(id);
+        });
       },
       onCancel() {},
     });

@@ -3,6 +3,7 @@ import { Modal, Form, Input, message, Radio } from "antd";
 import { CardColor } from "../../types";
 import { apiSaveNewCard, apiUpdateCard } from "../../api";
 import { getRandomBalance, getRandomCardNumber } from "../../utils";
+import { cardsStore } from "../../stores/cards";
 
 interface Props {
   isOpenModal: boolean;
@@ -40,13 +41,19 @@ export const CardModal: FC<Props> = ({
     };
 
     if (id) {
-      apiUpdateCard(id, data).then(() => {
+      apiUpdateCard(id, data).then((card) => {
         message.success("Карта обновлена!");
+        if (card) {
+          cardsStore.updateCard(id, card);
+        }
         closeModal();
       });
     } else {
-      apiSaveNewCard(data).then(() => {
+      apiSaveNewCard(data).then((card) => {
         message.success("Карта сохранена!");
+        if (card) {
+          cardsStore.addCard(card);
+        }
         closeModal();
       });
     }

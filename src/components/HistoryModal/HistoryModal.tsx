@@ -1,12 +1,11 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 import { Modal, Form, Input, message, Radio, Select } from "antd";
+import { observer } from "mobx-react";
 import { OperationType } from "../../types";
-import {
-  apiSaveNewOperation,
-  apiUpdateOperation,
-  apiGetCards,
-} from "../../api";
+import { apiSaveNewOperation, apiUpdateOperation } from "../../api";
 import { getRandomBalance, getRandomType } from "../../utils";
+import { operationsStore } from "../../stores/operations";
+import { cardsStore } from "../../stores/cards";
 
 interface Props {
   isOpenModal: boolean;
@@ -25,7 +24,7 @@ interface OperationFormData {
   cardNumber: string;
 }
 
-export const HistoryModal: FC<Props> = ({
+const HistoryModalComponent: FC<Props> = ({
   isOpenModal,
   closeModal,
   id,
@@ -35,7 +34,6 @@ export const HistoryModal: FC<Props> = ({
   isIncome = false,
 }) => {
   const [form] = Form.useForm();
-  const [cardsNumbers, setCardsNumbers] = useState<string[]>([]);
 
   const onFinish = () => {
     const formData = form.getFieldsValue() as OperationFormData;
@@ -47,14 +45,24 @@ export const HistoryModal: FC<Props> = ({
     };
 
     if (id) {
-      apiUpdateOperation(id, data).then(() => {
+      apiUpdateOperation(id, data).then((operation) => {
         message.success("Операция обновлена!");
+
+        if (operation) {
+          operationsStore.updateOperation(id, operation);
+        }
+
         closeModal();
         form.resetFields();
       });
     } else {
-      apiSaveNewOperation(data).then(() => {
+      apiSaveNewOperation(data).then((operation) => {
         message.success("Операция сохранена!");
+
+        if (operation) {
+          operationsStore.addOperation(operation);
+        }
+
         closeModal();
         form.resetFields();
       });
@@ -69,12 +77,6 @@ export const HistoryModal: FC<Props> = ({
     form.resetFields();
     closeModal();
   };
-
-  useEffect(() => {
-    apiGetCards().then((cards) => {
-      setCardsNumbers(cards.map((item) => item.number));
-    });
-  }, []);
 
   return (
     <Modal
@@ -118,9 +120,9 @@ export const HistoryModal: FC<Props> = ({
           rules={[{ required: true }]}
         >
           <Select placeholder="Выберите карту">
-            {cardsNumbers.map((item) => (
-              <Select.Option key={item} value={item}>
-                {item}
+            {cardsStore.cards.map((item) => (
+              <Select.Option key={item.number} value={item.number}>
+                {item.number}
               </Select.Option>
             ))}
           </Select>
@@ -137,3 +139,5 @@ export const HistoryModal: FC<Props> = ({
     </Modal>
   );
 };
+
+export const HistoryModal = observer(HistoryModalComponent);

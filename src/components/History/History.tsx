@@ -1,21 +1,21 @@
 import React, { FC, useEffect, useState } from "react";
 import "./History.css";
 import { List } from "antd";
+import { observer } from "mobx-react";
 import { HistoryHeader } from "../HistoryHeader/HistoryHeader";
 import { HistoryListItem } from "../HistoryListItem/HistoryListItem";
-import { OperationAPI } from "../../types";
 import { apiGetOperations } from "../../api";
+import { operationsStore } from "../../stores/operations";
 
 interface Props {}
 
-export const History: FC<Props> = () => {
+const HistoryComponent: FC<Props> = () => {
   const [isLoading, setLoader] = useState(false);
-  const [operations, setOperations] = useState<OperationAPI[]>([]);
 
   useEffect(() => {
     setLoader(true);
     apiGetOperations()
-      .then(setOperations)
+      .then(operationsStore.setOperations)
       .finally(() => setLoader(false));
   }, []);
 
@@ -28,7 +28,7 @@ export const History: FC<Props> = () => {
           size="small"
           itemLayout="horizontal"
           loading={isLoading}
-          dataSource={operations}
+          dataSource={operationsStore.operations}
           renderItem={(item) => (
             <HistoryListItem
               id={item.id}
@@ -44,3 +44,5 @@ export const History: FC<Props> = () => {
     </section>
   );
 };
+
+export const History = observer(HistoryComponent);
