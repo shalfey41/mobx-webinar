@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from "react";
 import "./CardsList.css";
 import { Spin } from "antd";
 import { observer } from "mobx-react";
-import { apiGetCards } from "../../api";
 import { CardItem } from "../CardItem/CardItem";
 import { cardsStore } from "../../stores/cards";
 
@@ -11,9 +10,7 @@ const CardsListComponent: FC = () => {
 
   useEffect(() => {
     setLoader(true);
-    apiGetCards()
-      .then(cardsStore.setCards)
-      .finally(() => setLoader(false));
+    cardsStore.fetchCards().finally(() => setLoader(false));
   }, []);
 
   if (isLoading) {

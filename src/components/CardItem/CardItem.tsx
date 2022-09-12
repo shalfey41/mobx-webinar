@@ -6,7 +6,6 @@ import ExclamationCircleOutlined from "@ant-design/icons/ExclamationCircleOutlin
 import classnames from "classnames";
 import { CardModal } from "../CardModal/CardModal";
 import { CardColor } from "../../types";
-import { apiDeleteCard } from "../../api";
 import { cardsStore } from "../../stores/cards";
 
 interface Props {
@@ -35,9 +34,7 @@ export const CardItem: FC<Props> = ({ id, balance, cardNumber, color }) => {
       cancelText: "Отменить",
       okText: "Удалить",
       onOk() {
-        return apiDeleteCard(id).then(() => {
-          cardsStore.removeCard(id);
-        });
+        return cardsStore.deleteCard(id);
       },
       onCancel() {},
     });

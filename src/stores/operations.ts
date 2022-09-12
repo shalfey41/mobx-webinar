@@ -1,6 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import { OperationAPI } from "../types";
 import { cardsStore } from "./cards";
+import {
+  apiDeleteOperation,
+  apiGetOperations,
+  apiSaveNewOperation,
+  apiUpdateOperation,
+} from "../api";
 
 class OperationsStore {
   operations: OperationAPI[] = [];
@@ -12,6 +18,35 @@ class OperationsStore {
   get cardsNumbers() {
     return cardsStore.cards.map((item) => item.number);
   }
+
+  fetchOperations = async () => {
+    const cards = await apiGetOperations();
+    this.setOperations(cards);
+  };
+
+  saveNewOperation = async (card: Omit<OperationAPI, "id" | "created">) => {
+    const newOperation = await apiSaveNewOperation(card);
+
+    if (newOperation) {
+      this.addOperation(newOperation);
+    }
+  };
+
+  saveOperation = async (
+    id: string,
+    card: Omit<OperationAPI, "id" | "created">
+  ) => {
+    const newOperation = await apiUpdateOperation(id, card);
+
+    if (newOperation) {
+      this.updateOperation(id, newOperation);
+    }
+  };
+
+  deleteOperation = async (id: string) => {
+    await apiDeleteOperation(id);
+    this.removeOperation(id);
+  };
 
   setOperations = (operations: OperationAPI[]) => {
     this.operations = operations;

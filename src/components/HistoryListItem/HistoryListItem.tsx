@@ -42,9 +42,7 @@ export const HistoryListItem: FC<Props> = ({
       cancelText: "Отменить",
       okText: "Удалить",
       onOk() {
-        return apiDeleteOperation(id).then(() => {
-          operationsStore.removeOperation(id);
-        });
+        return operationsStore.removeOperation(id);
       },
       onCancel() {},
     });

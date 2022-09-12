@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import { Modal, Form, Input, message, Radio, Select } from "antd";
 import { observer } from "mobx-react";
 import { OperationType } from "../../types";
-import { apiSaveNewOperation, apiUpdateOperation } from "../../api";
 import { getRandomBalance, getRandomType } from "../../utils";
 import { operationsStore } from "../../stores/operations";
 
@@ -44,24 +43,14 @@ const HistoryModalComponent: FC<Props> = ({
     };
 
     if (id) {
-      apiUpdateOperation(id, data).then((operation) => {
+      operationsStore.saveOperation(id, data).then(() => {
         message.success("Операция обновлена!");
-
-        if (operation) {
-          operationsStore.updateOperation(id, operation);
-        }
-
         closeModal();
         form.resetFields();
       });
     } else {
-      apiSaveNewOperation(data).then((operation) => {
+      operationsStore.saveNewOperation(data).then(() => {
         message.success("Операция сохранена!");
-
-        if (operation) {
-          operationsStore.addOperation(operation);
-        }
-
         closeModal();
         form.resetFields();
       });

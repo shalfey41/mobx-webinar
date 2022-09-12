@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Modal, Form, Input, message, Radio } from "antd";
 import { CardColor } from "../../types";
-import { apiSaveNewCard, apiUpdateCard } from "../../api";
 import { getRandomBalance, getRandomCardNumber } from "../../utils";
 import { cardsStore } from "../../stores/cards";
 
@@ -41,19 +40,13 @@ export const CardModal: FC<Props> = ({
     };
 
     if (id) {
-      apiUpdateCard(id, data).then((card) => {
+      cardsStore.saveCard(id, data).then(() => {
         message.success("Карта обновлена!");
-        if (card) {
-          cardsStore.updateCard(id, card);
-        }
         closeModal();
       });
     } else {
-      apiSaveNewCard(data).then((card) => {
+      cardsStore.saveNewCard(data).then(() => {
         message.success("Карта сохранена!");
-        if (card) {
-          cardsStore.addCard(card);
-        }
         closeModal();
       });
     }

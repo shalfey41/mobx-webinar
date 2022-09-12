@@ -5,7 +5,6 @@ import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import { HistoryHeader } from "../HistoryHeader/HistoryHeader";
 import { HistoryListItem } from "../HistoryListItem/HistoryListItem";
-import { apiGetOperations } from "../../api";
 import { operationsStore } from "../../stores/operations";
 
 interface Props {}
@@ -15,9 +14,7 @@ const HistoryComponent: FC<Props> = () => {
 
   useEffect(() => {
     setLoader(true);
-    apiGetOperations()
-      .then(operationsStore.setOperations)
-      .finally(() => setLoader(false));
+    operationsStore.fetchOperations().finally(() => setLoader(false));
   }, []);
 
   return (
