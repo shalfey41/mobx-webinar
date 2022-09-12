@@ -5,7 +5,6 @@ import { OperationType } from "../../types";
 import { apiSaveNewOperation, apiUpdateOperation } from "../../api";
 import { getRandomBalance, getRandomType } from "../../utils";
 import { operationsStore } from "../../stores/operations";
-import { cardsStore } from "../../stores/cards";
 
 interface Props {
   isOpenModal: boolean;
@@ -120,9 +119,9 @@ const HistoryModalComponent: FC<Props> = ({
           rules={[{ required: true }]}
         >
           <Select placeholder="Выберите карту">
-            {cardsStore.cards.map((item) => (
-              <Select.Option key={item.number} value={item.number}>
-                {item.number}
+            {operationsStore.cardsNumbers.map((item) => (
+              <Select.Option key={item} value={item}>
+                {item}
               </Select.Option>
             ))}
           </Select>

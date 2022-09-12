@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import "./History.css";
 import { List } from "antd";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import { HistoryHeader } from "../HistoryHeader/HistoryHeader";
 import { HistoryListItem } from "../HistoryListItem/HistoryListItem";
@@ -28,7 +29,7 @@ const HistoryComponent: FC<Props> = () => {
           size="small"
           itemLayout="horizontal"
           loading={isLoading}
-          dataSource={operationsStore.operations}
+          dataSource={toJS(operationsStore.operations)}
           renderItem={(item) => (
             <HistoryListItem
               id={item.id}

@@ -5,6 +5,13 @@ import "./index.css";
 
 import { initializeAPI } from "./api";
 import { App } from "./components/App/App";
+// import { spy } from "mobx";
+//
+// spy((event) => {
+//   if (event.type === "action") {
+//     console.log(event);
+//   }
+// });
 
 initializeAPI();
 

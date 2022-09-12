@@ -1,11 +1,16 @@
 import { makeAutoObservable } from "mobx";
 import { OperationAPI } from "../types";
+import { cardsStore } from "./cards";
 
 class OperationsStore {
   operations: OperationAPI[] = [];
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get cardsNumbers() {
+    return cardsStore.cards.map((item) => item.number);
   }
 
   setOperations = (operations: OperationAPI[]) => {
