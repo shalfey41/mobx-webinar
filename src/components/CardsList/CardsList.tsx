@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import "./CardsList.css";
 import { Spin } from "antd";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { CardItem } from "../CardItem/CardItem";
 import { cardsStore } from "../../stores/cards";
 

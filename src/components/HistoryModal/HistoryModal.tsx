@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Modal, Form, Input, message, Radio, Select } from "antd";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { OperationType } from "../../types";
 import { getRandomBalance, getRandomType } from "../../utils";
 import { operationsStore } from "../../stores/operations";

@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import "./History.css";
 import { List } from "antd";
 import { toJS } from "mobx";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { HistoryHeader } from "../HistoryHeader/HistoryHeader";
 import { HistoryListItem } from "../HistoryListItem/HistoryListItem";
 import { operationsStore } from "../../stores/operations";
